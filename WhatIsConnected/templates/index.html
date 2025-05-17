@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>USB Device Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .device {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>Connected USB Devices</h1>
+    {% if devices %}
+        {% for d in devices %}
+            <div class="device">
+                <strong>Product:</strong> {{ d.product }}<br>
+                <strong>Manufacturer:</strong> {{ d.manufacturer }}<br>
+                <strong>Vendor ID:</strong> {{ d.vendor_id }}<br>
+                <strong>Product ID:</strong> {{ d.product_id }}<br>
+                <strong>Device Type:</strong> {{ d.device_type }}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No USB devices found.</p>
+    {% endif %}
+</body>
+</html>
