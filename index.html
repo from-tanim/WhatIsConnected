@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>USB Device Checker</title>
+  <script defer>
+    async function checkUSBDevices() {
+      const loading = document.getElementById("loading");
+      const infoBox = document.getElementById("deviceInfo");
+      const icon = document.getElementById("deviceIcon");
+      infoBox.classList.remove("active");
+      icon.style.display = 'none';
+      loading.style.display = "block";
+      try {
+        const filters = [{}];
+        const device = await navigator.usb.requestDevice({ filters });
+
+        setTimeout(() => {
+          loading.style.display = "none";
+          icon.style.display = 'block';
+          infoBox.innerHTML = `
+            <strong>🔌 Device Detected</strong><br/>
+            <b>Product Name:</b> ${device.productName}<br/>
+            <b>Manufacturer:</b> ${device.manufacturerName}<br/>
+            <b>Serial Number:</b> ${device.serialNumber}
+          `;
+          infoBox.classList.add("active");
+        }, 1500);
+      } catch (error) {
+        loading.style.display = "none";
+        alert("No USB device selected or an error occurred.");
+      }
+    }
+  </script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1f4037, #99f2c8);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: #fff;
+      overflow: hidden;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      animation: fadeIn 1.5s ease;
+    }
+    button {
+      background-color: #00c9a7;
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      font-size: 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #007f6d;
+      transform: scale(1.05);
+    }
+    #deviceInfo {
+      margin-top: 30px;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 20px;
+      border-radius: 12px;
+      display: none;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      animation: fadeIn 1s ease-in-out;
+    }
+    #deviceInfo.active {
+      display: block;
+    }
+    #loading {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      display: none;
+    }
+    #deviceIcon {
+      font-size: 40px;
+      display: none;
+      margin-top: 20px;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <h1>🔍 USB Device Checker</h1>
+  <button onclick="checkUSBDevices()">🔎 Detect USB Device</button>
+  <div id="loading">🔄 Scanning for USB devices...</div>
+  <div id="deviceIcon">🖥️</div>
+  <div id="deviceInfo"></div>
+</body>
+</html>
